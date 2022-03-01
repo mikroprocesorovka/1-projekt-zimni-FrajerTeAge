@@ -79,9 +79,8 @@ while (1){
 	desitky=sekundy/10;
 	sekundy=sekundy%10;
 }
-
 void stopky(void) {     //každou sekundu odečítá hodnotu celkovy_cas
-	static uint16_t minuly_cas=0;
+	minuly_cas=0;
 	uint16_t cas;
 
 	cas = milis();
@@ -137,8 +136,9 @@ GPIO_Init(GPIOC,GPIO_PIN_4,GPIO_MODE_IN_PU_NO_IT);
 }
 
 // vyhodnocuje stav enkodéru
+uint8_t minule=1;
 void process_enc(void){
-	static minule=1; // pamatuje si minulý stav vstupu A (nutné k detekování sestupné hrany)
+	// pamatuje si minulý stav vstupu A (nutné k detekování sestupné hrany)
 	// pokud je na vstupu A hodnota 0 a minule byla hodnota 1 tak jsme zachytili sestupnou hranu
 	if(GPIO_ReadInputPin(GPIOC,GPIO_PIN_3) == RESET && minule==1){
 		minule = 0; // nyní je pin v log.0
