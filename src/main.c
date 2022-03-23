@@ -28,7 +28,6 @@ uint8_t desitkyminut=0;
 uint8_t minuty=0;
 uint8_t desitky=0;
 uint16_t minuly_cas=0;
-uint16_t cas=0;
 uint8_t stav_tlacitka=0;
 
 volatile int16_t hodnota=0; // proměnná jejíž hodnotu měníme enkodérem
@@ -68,8 +67,11 @@ while (1){
  }
  
  void stopky_cas(void){  //rozděluje čas na číslice pro jednotlivé segmenty
-	if (hodnota<0){
+	if (hodnota<=0){
 		hodnota=0;
+		if(hodnota==0){
+			stav_tlacitka=0;
+		}
 }
 	sekundy=hodnota;
 	desitkyminut=sekundy/600;
@@ -79,14 +81,14 @@ while (1){
 	desitky=sekundy/10;
 	sekundy=sekundy%10;
 }
-void stopky(void) {     //každou sekundu odečítá hodnotu celkovy_cas
-	minuly_cas=0;
+void stopky(void) {     //každou sekundu odečítá hodnotu cas
 	uint16_t cas;
 
 	cas = milis();
 	if(stav_tlacitka==1||stav_tlacitka==2){ //spuštění stopek tlačítkem
 		if((cas-minuly_cas) >= 1000){
 			hodnota=hodnota-1;
+			
 			minuly_cas = cas;	
 		}
 	}
